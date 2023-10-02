@@ -18,7 +18,7 @@ export class HtmlParser {
     };
   }
 
-  toHTML(object: any) {
+  toHTML(object: any): string {
     let html = "<tr>";
     for (const key in object) {
       html += "<td>" + object[key] + "</td>";

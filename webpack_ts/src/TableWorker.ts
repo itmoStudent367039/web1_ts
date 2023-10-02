@@ -5,7 +5,7 @@ export class TableWorker {
     this.table = document.querySelector("table");
   }
 
-  innerData(tableRow: string) {
+  innerData(tableRow: string): void {
     let tBody = this.table?.getElementsByTagName("tbody")[0];
     let row: HTMLTableRowElement = document.createElement("tr");
     row.innerHTML = tableRow;

@@ -21,7 +21,7 @@ export async function clearTable() {
     }
 }
 
-export function addRadiusChangeListener() {
+export function addRadiusChangeListener(): void {
     const radius: number | null = findAndReturnSelectedRadius();
     if (radius !== null) {
         graph.redrawAll(radius);
@@ -67,7 +67,7 @@ export async function addCheckButtonListener() {
     }
 }
 
-function drawAllPoints(canvasPrinter: Graph) {
+function drawAllPoints(canvasPrinter: Graph): void {
     const data = tableWorker.getData();
     if (data) {
         for (let i = 0; i < data.length; i++) {

@@ -22,13 +22,13 @@ export class Graph {
     this.setPointerAtDot(1);
   }
 
-  drawAxes() {
+  drawAxes(): void {
     this.ctx.fillStyle = "black";
     this.drawArrow(-this.SIZE, this.SIZE / 2, this.SIZE, this.SIZE / 2);
     this.drawArrow(this.SIZE / 2, this.SIZE, this.SIZE / 2, 0);
   }
 
-  drawGraph(r: number) {
+  drawGraph(r: number): void {
     const totalPoints = 7;
     const pointInPixels = this.SIZE / totalPoints;
     this.ctx.fillStyle = "#81BECE";
@@ -65,7 +65,7 @@ export class Graph {
     this.ctx.fill();
   }
 
-  setPointerAtDot(max_r: number = 3) {
+  setPointerAtDot(max_r: number = 3): void {
     const totalPoints = 7;
     const pointInPixels = this.SIZE / totalPoints;
     this.ctx.textAlign = "center";
@@ -102,7 +102,7 @@ export class Graph {
     this.ctx.stroke();
   }
 
-  drawArrow(fromX: number, fromY: number, toX: number, toY: number) {
+  drawArrow(fromX: number, fromY: number, toX: number, toY: number):  void {
     const headLength = 10;
     const dx = toX - fromX;
     const dy = toY - fromY;
@@ -123,7 +123,7 @@ export class Graph {
     this.ctx.stroke();
   }
 
-  drawPoint(x: number, y: number, success: boolean) {
+  drawPoint(x: number, y: number, success: boolean): void {
     if (success) {
       this.ctx.fillStyle = this.COLOR_GREEN;
     } else {

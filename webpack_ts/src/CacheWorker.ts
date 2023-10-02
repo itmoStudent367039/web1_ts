@@ -7,7 +7,7 @@ export class CacheWorker {
     )?.put(url + this.randomId(), new Response(JSON.stringify(data)));
   }
 
-  randomId() {
+  randomId(): string {
     const randomNumber = Math.floor(Math.random() * 100000);
     const timestamp = Date.now();
     return `${timestamp}-${randomNumber}`;
