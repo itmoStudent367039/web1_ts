@@ -1,21 +1,34 @@
 const TD_TAG: RegExp = /<td>(.*?)<\/td>/g;
-export class HtmlParser {
-  parse(row: string) {
-    const matches = row.matchAll(TD_TAG);
-    const rowData = [];
+const TR_TAG: RegExp = /(.*?)<\/tr>/g;
 
-    for (const match of matches) {
-      rowData.push(match[1]);
+export class HtmlParser {
+  parse(rows: string): object | null {
+    let matchesTr;
+    let lastMatch;
+
+    while ((matchesTr = TR_TAG.exec(rows)) !== null) {
+      lastMatch = matchesTr[0];
     }
 
-    return {
-      requestTime: rowData[0] || "",
-      currentTime: rowData[1] || "",
-      inRange: rowData[2] || "",
-      x: rowData[3] || "",
-      y: rowData[4] || "",
-      r: rowData[5] || "",
-    };
+    if (lastMatch) {
+      const matches = lastMatch.matchAll(TD_TAG);
+      const rowData = [];
+
+      for (const match of matches) {
+        rowData.push(match[1]);
+      }
+
+      return {
+        requestTime: rowData[0] || "",
+        currentTime: rowData[1] || "",
+        inRange: rowData[2] || "",
+        x: rowData[3] || "",
+        y: rowData[4] || "",
+        r: rowData[5] || "",
+      };
+    } else {
+      return null;
+    }
   }
 
   toHTML(object: any): string {

@@ -14,6 +14,7 @@ export class Graph {
     this.ctx = (this.canvas as HTMLCanvasElement).getContext("2d");
     this.ctx.font = `${this.TEXT_SIZE}px Soyuz Grotesk`;
   }
+
   redrawAll(r: number) {
     this.ctx.clearRect(0, 0, this.SIZE, this.SIZE);
     this.drawGraph(r);
@@ -102,7 +103,7 @@ export class Graph {
     this.ctx.stroke();
   }
 
-  drawArrow(fromX: number, fromY: number, toX: number, toY: number):  void {
+  drawArrow(fromX: number, fromY: number, toX: number, toY: number): void {
     const headLength = 10;
     const dx = toX - fromX;
     const dy = toY - fromY;

@@ -1,4 +1,4 @@
-import { doAttention } from "./Helper";
+import { alertAttention } from "./SweerAlert";
 
 export class InputValidator {
   private FROM_MINUS_THREE_TILL_THREE: RegExp = new RegExp(
@@ -17,7 +17,7 @@ export class InputValidator {
     if (this.getX !== "none") {
       return true;
     } else {
-      doAttention("Select X").then();
+      alertAttention("Select X").then();
       return false;
     }
   }
@@ -27,7 +27,7 @@ export class InputValidator {
     if (y && this.FROM_MINUS_THREE_TILL_THREE.test(y.toString())) {
       return true;
     } else {
-      doAttention("Y between -3 and 3").then();
+      alertAttention("Y between -3 and 3").then();
       return false;
     }
   }

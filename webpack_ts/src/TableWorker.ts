@@ -1,3 +1,5 @@
+import $ from "jquery";
+
 export class TableWorker {
   private table: HTMLTableElement | null;
 
@@ -5,7 +7,11 @@ export class TableWorker {
     this.table = document.querySelector("table");
   }
 
-  innerData(tableRow: string): void {
+  innerRows(tableRows: string): void {
+    $("tbody").html(tableRows);
+  }
+
+  innerRow(tableRow: string): void {
     let tBody = this.table?.getElementsByTagName("tbody")[0];
     let row: HTMLTableRowElement = document.createElement("tr");
     row.innerHTML = tableRow;
