@@ -41,7 +41,7 @@ function findAndReturnSelectedRadius(): number | null {
 export async function addCheckButtonListener() {
     if (inputValidator.validateX() && inputValidator.validateY()) {
         try {
-            const response = await fetch("../php/Server.php", {
+            const response = await fetch("php/Server.php", {
                 method: "POST",
                 body: JSON.stringify({
                     x: inputValidator.getX,
