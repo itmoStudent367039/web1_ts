@@ -1,17 +1,17 @@
-const TD_TAG: RegExp = /<td>(.*?)<\/td>/g;
-const TR_TAG: RegExp = /(.*?)<\/tr>/g;
-
 export class HtmlParser {
+  TD_TAG: RegExp = /<td>(.*?)<\/td>/g;
+  TR_TAG: RegExp = /(.*?)<\/tr>/g;
+
   parse(rows: string): object | null {
     let matchesTr;
     let lastMatch;
 
-    while ((matchesTr = TR_TAG.exec(rows)) !== null) {
+    while ((matchesTr = this.TR_TAG.exec(rows)) !== null) {
       lastMatch = matchesTr[0];
     }
 
     if (lastMatch) {
-      const matches = lastMatch.matchAll(TD_TAG);
+      const matches = lastMatch.matchAll(this.TD_TAG);
       const rowData = [];
 
       for (const match of matches) {

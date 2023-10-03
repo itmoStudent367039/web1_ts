@@ -1,4 +1,4 @@
-import { alertAttention } from "./SweerAlert";
+import { alertAttention } from "./Helper";
 
 export class InputValidator {
   private FROM_MINUS_THREE_TILL_THREE: RegExp = new RegExp(

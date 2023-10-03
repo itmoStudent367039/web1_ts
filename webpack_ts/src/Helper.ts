@@ -4,7 +4,7 @@ import { TableWorker } from "./TableWorker";
 import { Graph } from "./Graph";
 import { HtmlParser } from "./HtmlParser";
 import { CacheWorker } from "./CacheWorker";
-import { alertError, alertSuccess } from "./SweerAlert";
+import Swal from "sweetalert2";
 
 const graph = new Graph();
 const tableWorker = new TableWorker();
@@ -13,7 +13,7 @@ const htmlParser = new HtmlParser();
 const cacheWorker = new CacheWorker();
 
 export async function clearTable() {
-  const data: string | null = await sendRequest(
+  const data = await sendRequest(
     {
       delete: "true",
     },
@@ -107,6 +107,29 @@ async function sendRequest(data: object, url: string, method: string) {
   }
 }
 
+export async function alertError(text: string) {
+  await Swal.fire({
+    icon: "error",
+    title: "Oops...",
+    text: text,
+  });
+}
+
+export async function alertAttention(text: string) {
+  await Swal.fire({
+    icon: "warning",
+    title: text,
+  });
+}
+
+export async function alertSuccess(text: string) {
+  await Swal.fire({
+    icon: "success",
+    title: text,
+    showConfirmButton: false,
+    timer: 1500,
+  });
+}
 $(async function () {
   const array = cacheWorker.getAllCachedPoints();
   $("#checkButton").on("click", addCheckButtonListener);
