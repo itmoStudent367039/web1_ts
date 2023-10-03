@@ -41,7 +41,7 @@ export function addRadiusChangeListener(): void {
 }
 
 function findAndReturnSelectedRadius(): number | null {
-  const selectedElement = $("input[name='R']:checked");
+  const selectedElement = document.querySelector("input[name='R']:checked");
   if (selectedElement instanceof HTMLInputElement) {
     return +selectedElement.value;
   } else {

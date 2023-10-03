@@ -15,7 +15,7 @@ if (isset($postData['x'], $postData['y'], $postData['r'])) {
     $x = $postData['x'];
     $y = $postData['y'];
     $r = $postData['r'];
-    $regex = '/^-?(?:3(?:\.0+)?|[0-2](?:\.[0-9]+)?|\.[0-9]+)$/';
+    $between_minus_three_and_three = '/^-?(?:3(?:\.0+)?|[0-2](?:\.[0-9]+)?|\.[0-9]+)$/';
     try {
 
         if (!($x == -2 || $x == -1.5 || $x == -1 || $x == -0.5 || $x == 0 ||
@@ -23,7 +23,7 @@ if (isset($postData['x'], $postData['y'], $postData['r'])) {
 
             throw new InvalidArgumentException("X isn't valid: $x");
 
-        } else if (!preg_match($regex, $y)) {
+        } else if (!preg_match($between_minus_three_and_three, $y)) {
 
             throw new InvalidArgumentException("Y isn't valid: $y");
 
@@ -64,14 +64,6 @@ if (isset($postData['x'], $postData['y'], $postData['r'])) {
 function deletePointStorage()
 {
     $_SESSION = [];
-    if (ini_get("session.use_cookies")) {
-        $params = session_get_cookie_params();
-        setcookie(session_name(), '', time() - 42000,
-            $params["path"], $params["domain"],
-            $params["secure"], $params["httponly"]
-        );
-    }
-
 }
 
 function putPoint($point)
