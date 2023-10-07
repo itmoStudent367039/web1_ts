@@ -1,4 +1,4 @@
-import { alertAttention } from "./Helper";
+import { alertAttention } from "./SweetAlert";
 
 export class InputValidator {
   private FROM_MINUS_THREE_TILL_THREE: RegExp = new RegExp(
@@ -16,20 +16,21 @@ export class InputValidator {
   validateX(): boolean {
     if (this.getX !== "none") {
       return true;
-    } else {
-      alertAttention("Select X").then();
-      return false;
     }
+
+    alertAttention("Select X").then();
+    return false;
   }
 
   validateY(): boolean {
-    let y: string | undefined = this.getY?.replace(",", ".");
+    const y: string = this.getY?.replace(",", ".");
+
     if (y && this.FROM_MINUS_THREE_TILL_THREE.test(y.toString())) {
       return true;
-    } else {
-      alertAttention("Y between -3 and 3").then();
-      return false;
     }
+
+    alertAttention("Y between -3 and 3").then();
+    return false;
   }
 
   get getY(): string | undefined {

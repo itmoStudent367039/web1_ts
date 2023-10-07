@@ -7,7 +7,7 @@ export class Graph {
   private COLOR_RED: string = "#D18189";
   private COLOR_GREEN: string = "#87C67A";
   private canvas: HTMLElement;
-  private ctx: any;
+  private ctx: CanvasRenderingContext2D;
 
   constructor() {
     this.canvas = document.getElementById("graph") as HTMLCanvasElement;
@@ -30,8 +30,8 @@ export class Graph {
   }
 
   drawGraph(r: number): void {
-    const totalPoints = 7;
-    const pointInPixels = this.SIZE / totalPoints;
+    const totalPoints: number = 7;
+    const pointInPixels: number = this.SIZE / totalPoints;
     this.ctx.fillStyle = "#81BECE";
     this.ctx.beginPath();
     this.ctx.moveTo(this.SIZE / 2, this.SIZE / 2);
@@ -67,8 +67,8 @@ export class Graph {
   }
 
   setPointerAtDot(max_r: number = 3): void {
-    const totalPoints = 7;
-    const pointInPixels = this.SIZE / totalPoints;
+    const totalPoints: number = 7;
+    const pointInPixels: number = this.SIZE / totalPoints;
     this.ctx.textAlign = "center";
     this.ctx.textBaseline = "middle";
     this.ctx.fillText(
@@ -104,10 +104,10 @@ export class Graph {
   }
 
   drawArrow(fromX: number, fromY: number, toX: number, toY: number): void {
-    const headLength = 10;
-    const dx = toX - fromX;
-    const dy = toY - fromY;
-    const angle = Math.atan2(dy, dx);
+    const headLength: number = 10;
+    const dx: number = toX - fromX;
+    const dy: number = toY - fromY;
+    const angle: number = Math.atan2(dy, dx);
     this.ctx.beginPath();
     this.ctx.lineWidth = this.LINE_WIDTH;
     this.ctx.moveTo(fromX, fromY);
@@ -130,8 +130,8 @@ export class Graph {
     } else {
       this.ctx.fillStyle = this.COLOR_RED;
     }
-    const totalPoints = 7;
-    const pointInPixels = this.SIZE / totalPoints;
+    const totalPoints: number = 7;
+    const pointInPixels: number = this.SIZE / totalPoints;
     this.ctx.beginPath();
     this.ctx.arc(
       this.SIZE / 2 + pointInPixels * x,

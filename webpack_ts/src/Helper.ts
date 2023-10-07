@@ -4,7 +4,7 @@ import { TableWorker } from "./TableWorker";
 import { Graph } from "./Graph";
 import { HtmlParser } from "./HtmlParser";
 import { CacheWorker } from "./CacheWorker";
-import Swal from "sweetalert2";
+import { alertError, alertSuccess } from "./SweetAlert";
 
 const graph = new Graph();
 const tableWorker = new TableWorker();
@@ -13,7 +13,7 @@ const htmlParser = new HtmlParser();
 const cacheWorker = new CacheWorker();
 
 export async function clearTable() {
-  const data = await sendRequest(
+  const data: string | null = await sendRequest(
     {
       delete: "true",
     },
@@ -32,21 +32,20 @@ export async function clearTable() {
   }
 }
 
-export function addRadiusChangeListener(): void {
+export async function addRadiusChangeListener() {
   const radius: number | null = findAndReturnSelectedRadius();
   if (radius !== null) {
     graph.redrawAll(radius);
   }
-  drawAllPoints(graph);
+  await drawAllPoints(graph);
 }
 
 function findAndReturnSelectedRadius(): number | null {
   const selectedElement = document.querySelector("input[name='R']:checked");
   if (selectedElement instanceof HTMLInputElement) {
     return +selectedElement.value;
-  } else {
-    return null;
   }
+  return null;
 }
 
 export async function addCheckButtonListener() {
@@ -62,12 +61,12 @@ export async function addCheckButtonListener() {
     );
 
     if (data) {
-      const point: object | null = htmlParser.parse(data);
-      if (point) {
-        await cacheWorker.putPoint(htmlParser.parse(data), "./data.html");
-        tableWorker.deleteAllRows();
-        tableWorker.innerRows(data);
-        drawAllPoints(graph);
+      tableWorker.deleteAllRows();
+      tableWorker.innerRows(data);
+      const lastPoint: object | null = tableWorker.getLastRow();
+      if (lastPoint) {
+        await cacheWorker.putPoint(lastPoint, "./data.html");
+        await drawAllPoints(graph);
       } else {
         console.log("no points from server");
       }
@@ -75,61 +74,39 @@ export async function addCheckButtonListener() {
   }
 }
 
-function drawAllPoints(canvasPrinter: Graph): void {
-  const data: Array<any> | null = tableWorker.getData();
-  if (data) {
-    data.forEach((point) => {
-      canvasPrinter.drawPoint(
-        point?.x,
-        point?.y,
-        (point?.inRange?.toLowerCase() ?? "") === "true",
-      );
-    });
-  }
+async function drawAllPoints(canvasPrinter: Graph) {
+  const data = cacheWorker.getAllCachedPoints();
+  (await data)?.forEach((point) => {
+    canvasPrinter.drawPoint(
+      point?.x,
+      point?.y,
+      (point?.inRange?.toLowerCase() ?? "") === "true",
+    );
+  });
 }
 
-async function sendRequest(data: object, url: string, method: string) {
+async function sendRequest(
+  data: object,
+  url: string,
+  method: string,
+): Promise<string> | null {
   try {
     const response = await fetch(url, {
       method: method,
       body: JSON.stringify(data),
     });
     const info = await response.json();
-    if (info?.status === "error") {
-      await alertError(info?.message);
-      return null;
-    } else if (info?.status === "success") {
+    if (info?.status === "success") {
       return info?.message;
+    } else if (info?.status === "error") {
+      await alertError(info?.message);
     }
   } catch (e) {
     console.log(e);
-    return null;
   }
+  return null;
 }
 
-export async function alertError(text: string) {
-  await Swal.fire({
-    icon: "error",
-    title: "Oops...",
-    text: text,
-  });
-}
-
-export async function alertAttention(text: string) {
-  await Swal.fire({
-    icon: "warning",
-    title: text,
-  });
-}
-
-export async function alertSuccess(text: string) {
-  await Swal.fire({
-    icon: "success",
-    title: text,
-    showConfirmButton: false,
-    timer: 1500,
-  });
-}
 $(async function () {
   const array = cacheWorker.getAllCachedPoints();
   $("#checkButton").on("click", addCheckButtonListener);
@@ -149,5 +126,5 @@ $(async function () {
   if (radius !== null) {
     graph.redrawAll(radius);
   }
-  drawAllPoints(graph);
+  await drawAllPoints(graph);
 });

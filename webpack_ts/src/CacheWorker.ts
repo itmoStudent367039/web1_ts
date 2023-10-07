@@ -16,29 +16,28 @@ export class CacheWorker {
   async clearCache() {
     const openCache = await this.cache;
     const keys = await openCache.keys();
-    if (keys && keys.length > 0) {
+    if (keys) {
       for (const request of keys) {
         await openCache.delete(request.url);
       }
     }
   }
 
-  async getAllCachedPoints() {
+  async getAllCachedPoints(): Promise<any[]> | null {
     const openCache = await this.cache;
     const keys = await openCache.keys();
 
-    if (keys && keys.length > 0) {
+    if (keys) {
       const data = [];
-      for (let i = 0; i < keys.length; i++) {
-        const response = await openCache.match(keys[i]);
+      for (const key of keys) {
+        const response = await openCache.match(key);
         const cachedData = await response?.json();
         if (cachedData) {
           data.push(cachedData);
         }
       }
       return data;
-    } else {
-      return null;
     }
+    return null;
   }
 }

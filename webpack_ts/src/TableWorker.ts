@@ -1,57 +1,54 @@
 import $ from "jquery";
 
 export class TableWorker {
-  private table: HTMLTableElement | null;
+  private tBody: JQuery<HTMLElement> | null;
 
   constructor() {
-    this.table = document.querySelector("table");
+    this.tBody = $("#tableData");
   }
 
   innerRows(tableRows: string): void {
-    $("tbody").html(tableRows);
+    this.tBody?.html(tableRows);
   }
 
   innerRow(tableRow: string): void {
-    let tBody = this.table?.getElementsByTagName("tbody")[0];
     let row: HTMLTableRowElement = document.createElement("tr");
     row.innerHTML = tableRow;
-    tBody?.appendChild(row);
+    this.tBody?.append(row);
   }
 
-  getData(): Array<any> | null {
-    let rows = this.table?.rows;
-    if (!rows) {
-      return null;
-    }
-    const array: Array<any> = [];
-    for (let i = 1; i < rows.length; i++) {
-      const row = rows[i];
-      const requestTime: string = row.cells[0].innerText;
-      const currentTime: string = row.cells[1].innerText;
-      const inRange: string = row.cells[2].innerText;
-      const x: string = row.cells[3].innerText;
-      const y: string = row.cells[4].innerText;
-      const r: string = row.cells[5].innerText;
-      array.push({
-        requestTime: requestTime,
-        currentTime: currentTime,
-        inRange: inRange,
-        x: x,
-        y: y,
-        r: r,
-      });
+  getLastRow(): object | null {
+    if (this.tBody.length) {
+      const rows = this.tBody.find("tr");
+      if (rows.length) {
+        const lastRow = rows.last();
+        const [
+          requestTime = "",
+          currentTime = "",
+          inRange = "",
+          x = "",
+          y = "",
+          r = "",
+        ] = lastRow
+          .find("td")
+          .toArray()
+          .map((element) => $(element).text());
+
+        return {
+          requestTime,
+          currentTime,
+          inRange,
+          x,
+          y,
+          r,
+        };
+      }
     }
 
-    return array;
+    return null;
   }
 
   deleteAllRows(): void {
-    let rows = this.table?.rows;
-    if (!rows) {
-      return;
-    }
-    for (let i = rows.length - 1; i > 0; i--) {
-      this.table?.deleteRow(i);
-    }
+    this.tBody.html("");
   }
 }
